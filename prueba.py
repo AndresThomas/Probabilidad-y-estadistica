@@ -54,7 +54,11 @@ class Window(QWidget):
         self.btnPastel.clicked.connect(self.printPastel)
         self.btnPoligono.clicked.connect(self.printPoligono)
 
-    
+    """
+    Encontrar el modo de poder instanciar una sola ventana
+    de los diferentes tipos, es decir una sola instancia de
+    windowGraphics pero que se muestre el poligono
+    """
     def printBarras(self):
         print("abriendo barras")
         w = WindowGraphics()
