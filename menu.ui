@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1240</width>
+    <height>877</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(54, 54, 54);</string>
+   </property>
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>-10</x>
+      <y>-30</y>
+      <width>291</width>
+      <height>891</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(61, 61, 61);</string>
+    </property>
+    <widget class="QLabel" name="text_Graficas">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>70</y>
+       <width>111</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+font: 63 14pt &quot;Segoe UI Semibold&quot;;</string>
+     </property>
+     <property name="text">
+      <string>GRÁFICAS</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnBarras">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>140</y>
+       <width>160</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 22, 66);
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>DIAGRAMA DE BARRAS</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnHistograma">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>240</y>
+       <width>160</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(213, 142, 0);
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>HISTOGRAMA</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnPastel">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>340</y>
+       <width>160</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(212, 79, 46);
+color: white;
+</string>
+     </property>
+     <property name="text">
+      <string>GRÁFICA DE PASTEL</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnPoligono">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>440</y>
+       <width>160</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(161, 80, 121);
+color: white;
+</string>
+     </property>
+     <property name="text">
+      <string>POLIGONO-FRECUENCIAS</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnOjiva">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>540</y>
+       <width>160</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 163, 120);
+color: white;
+</string>
+     </property>
+     <property name="text">
+      <string>OJIVA</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="text_Titulo">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>50</y>
+      <width>371</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Times New Roman</family>
+      <pointsize>20</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(218, 218, 218);</string>
+    </property>
+    <property name="text">
+     <string>USO DEL TRANSPORTE </string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1240</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

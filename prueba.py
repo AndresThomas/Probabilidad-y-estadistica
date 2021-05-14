@@ -1,7 +1,7 @@
 #import libraries PyQt5
 #import the name of the file from designer 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 from PyQt5 import uic
 
 class Student:
@@ -43,10 +43,10 @@ class WindowGraphics(QWidget):
     def pastel(x,data):
         print('pastel')
 
-class Window(QWidget):
+class Window(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('init.ui', self)
+        uic.loadUi('menu.ui', self)
 
         self.btnBarras.clicked.connect(self.printBarras)
         self.btnHistograma.clicked.connect(self.printHistograma)
@@ -90,8 +90,9 @@ class Window(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    demo = Window()
-    demo.show()
+    window = Window()
+    window.setWindowTitle("Uso del Transporte")
+    window.show()
 
     try: 
         sys.exit(app.exec_())
