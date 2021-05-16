@@ -3,6 +3,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5 import uic
+from matploblib import pyplot
 
 class Student:
     #clase estudiante
