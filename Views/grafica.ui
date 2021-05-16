@@ -18,16 +18,12 @@
     <rect>
      <x>20</x>
      <y>20</y>
-     <width>81</width>
-     <height>41</height>
+     <width>111</width>
+     <height>51</height>
     </rect>
    </property>
    <property name="text">
     <string>Volver</string>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>backArrow.jpg</normaloff>backArrow.jpg</iconset>
    </property>
   </widget>
  </widget>

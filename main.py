@@ -1,6 +1,7 @@
 #import libraries PyQt5
 #import the name of the file from designer 
 import sys
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 from PyQt5 import uic
 
@@ -20,7 +21,9 @@ las diferentes maneras de mostrar los datos """
 class WindowGraphics(QWidget):
     def __init__(self):
         super().__init__()
-        uic.loadUi('grafica.ui', self)
+        uic.loadUi('./Views/grafica.ui', self)
+
+        self.btnVolver.clicked.connect(self.close)
     """
     x no se que sea, tal vez es la referencia de self o el propio
     objeto, pero si se borra da error xd
@@ -31,7 +34,6 @@ class WindowGraphics(QWidget):
 
     
     """
-
     def barras(x,data):
         print('creando barras',data)
     def histograma(x,data):
@@ -43,16 +45,20 @@ class WindowGraphics(QWidget):
     def pastel(x,data):
         print('pastel')
 
-class Window(QMainWindow):
+
+#Clase Main, donde se ejecuta la aplicacion Principal
+class Main(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('menu.ui', self)
+        uic.loadUi('./Views/menu.ui', self)
 
+        #BOTONES QUE HAY EN EL MENU PRINCIPAL
         self.btnBarras.clicked.connect(self.printBarras)
         self.btnHistograma.clicked.connect(self.printHistograma)
         self.btnOjiva.clicked.connect(self.printOjiva)
         self.btnPastel.clicked.connect(self.printPastel)
         self.btnPoligono.clicked.connect(self.printPoligono)
+        self.btnExit.clicked.connect(self.close) #<--- cerrar la aplicación
 
     """
     Encontrar el modo de poder instanciar una sola ventana
@@ -90,8 +96,9 @@ class Window(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = Window()
-    window.setWindowTitle("Uso del Transporte")
+    window = Main()
+    window.setWindowTitle("Uso del Transporte") #<--- colocar nombre a la aplicacion
+    window.setWindowIcon(QIcon('./Resources/icon.png')) #<--- colocar icono para la aplicacion
     window.show()
 
     try: 
