@@ -18,7 +18,10 @@ class Main(QMainWindow):
         self.dataFilteredYesTakeACombi = self.df[filt] # <- guardamos los elementos donde si toman combi
         filt = self.df['toma combi'] == 'No'# <-- devuelve true en los datos donde la expresion evaluada cumple
         self.dataFilteredNoTakeACombi = self.df[filt] # <- guardamos los elementos donde si toman combi
-        
+        IsAMen = self.df['Sexo'] == 'Hombre'
+        self.menPoblation = self.df[IsAMen]
+        IsAWomen = self.df['Sexo'] == 'Mujer'
+        self.womenPoblation = self.df[IsAWomen]
         
         #BOTONES QUE HAY EN EL MENU PRINCIPAL
         self.btnBarras.clicked.connect(self.printBarras)
@@ -41,11 +44,11 @@ class Main(QMainWindow):
                 if(item == m):#la cantidad contenida en item
                     count+=1
             dict.update({item:count})#<- se actualiza el diccionario
-        print(dict) # todo ok
+        #print(dict) # todo ok
         dict.pop(1) # eliminamos el dato basura
-        print(dict.keys()) # eje X
-        print(dict.values()) # eje Y
-        pyplot.bar(dict.keys(),dict.values())
+        #print(dict.keys()) # eje X
+        #print(dict.values()) # eje Y
+        barras = pyplot.bar(dict.keys(),dict.values())
         pyplot.xlabel("Monto")
         pyplot.ylabel("Numero de estudiantes")
         pyplot.show()
@@ -55,7 +58,10 @@ class Main(QMainWindow):
     def printOjiva(self):
         pass
     def printPastel(self):
-        pass
+        labels = ['Hombres','Mujeres']
+        pyplot.pie([self.menPoblation.__len__(),self.womenPoblation.__len__()],labels=labels,autopct='%.2f %%')
+        pyplot.show()
+        
     def printPoligono(self):
         pass
 
