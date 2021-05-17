@@ -4,18 +4,8 @@ import sys
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 from PyQt5 import uic
-from matploblib import pyplot
-
-class Student:
-    #clase estudiante
-    def __init__(self,grade,takeABus,numOfBus,moneyEspend,distance,time,sex):
-        self.grade = grade
-        self.takeABus = takeABus
-        self.numOfBus = numOfBus
-        self.moneyEspend = moneyEspend
-        self.distance = distance
-        self.time = time
-        self.sex = sex
+from matplotlib import pyplot
+import pandas as pd
 
 """ esta clase es la GUI generica para instanciar
 las diferentes maneras de mostrar los datos """
@@ -23,27 +13,23 @@ class WindowGraphics(QWidget):
     def __init__(self):
         super().__init__()
         uic.loadUi('./Views/grafica.ui', self)
-
         self.btnVolver.clicked.connect(self.close)
-    """
-    x no se que sea, tal vez es la referencia de self o el propio
-    objeto, pero si se borra da error xd
-    """
-    
-    """
-    plantear que variables vamos a utlizar, instalar matploblib XD
-
-    
-    """
-    def barras(x,data):
-        print('creando barras',data)
-    def histograma(x,data):
-        print('histo')
-    def ojiva(x,data):
+    def barras(x,takenCombi,noTakenCombi):
+        money = takenCombi['dinero invertido'] #<-- Guarda los montos registrados
+        pyplot.title('Grafica de barras')
+        pyplot.ylabel(money)
+        
+    def histograma(x,takenCombi,noTakenCombi):
+        print(takenCombi['N de combis'])
+        """
+        hay que hacer algo con los rangos, ya que estamos trabajando con numeros
+        por lo que: ----> 3 a 4  <---- no es un numero
+        """
+    def ojiva(x,takenCombi,noTakenCombi):
         print('ojiva')
     def poligono(x,data):
         print('poligono')
-    def pastel(x,data):
+    def pastel(x,takenCombi,noTakenCombi):
         print('pastel')
 
 
@@ -52,7 +38,14 @@ class Main(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('./Views/menu.ui', self)
-
+        self.data = pd.read_csv('data.csv') #<-- leemos el archivo csv
+        self.df = pd.DataFrame(self.data) #<-- creamos un dataframe
+        filt = self.df['toma combi'] == 'Sí'# <-- devuelve true en los datos donde la expresion evaluada cumple
+        self.dataFilteredYesTakeACombi = self.df[filt] # <- guardamos los elementos donde si toman combi
+        filt = self.df['toma combi'] == 'No'# <-- devuelve true en los datos donde la expresion evaluada cumple
+        self.dataFilteredNoTakeACombi = self.df[filt] # <- guardamos los elementos donde si toman combi
+        
+        
         #BOTONES QUE HAY EN EL MENU PRINCIPAL
         self.btnBarras.clicked.connect(self.printBarras)
         self.btnHistograma.clicked.connect(self.printHistograma)
@@ -61,38 +54,33 @@ class Main(QMainWindow):
         self.btnPoligono.clicked.connect(self.printPoligono)
         self.btnExit.clicked.connect(self.close) #<--- cerrar la aplicación
 
-    """
-    Encontrar el modo de poder instanciar una sola ventana
-    de los diferentes tipos, es decir una sola instancia de
-    windowGraphics pero que se muestre el poligono
-    """
     def printBarras(self):
-        print("abriendo barras")
-        w = WindowGraphics()
-        w.barras('conjunto de datos en una variable')
-        self.demo = w
+        b = WindowGraphics()
+        b.barras(self.dataFilteredYesTakeACombi,self.dataFilteredNoTakeACombi)
+        self.demo = b
         self.demo.show()
     def printHistograma(self):
-        print("abriendo histograma")
         w = WindowGraphics()
-        w.histograma('data')
-        self.demo = WindowGraphics()
+        w.histograma(self.dataFilteredYesTakeACombi,self.dataFilteredNoTakeACombi)
+        self.demo = w
         self.demo.show()
     def printOjiva(self):
         print("abriendo ojiva")
-        w = WindowGraphics()
-        w.ojiva('conjunto de datos en una variable')
-        self.demo = WindowGraphics()
+        o = WindowGraphics()
+        o.ojiva(self.dataFilteredYesTakeACombi,self.dataFilteredNoTakeACombi)
+        self.demo = o
         self.demo.show()
     def printPastel(self):
         print("abriendo pastel")
-        w = WindowGraphics()
-        w.pastel('conjunto de datos en una variable')
-        self.demo = WindowGraphics()
+        p = WindowGraphics()
+        p.pastel(self.dataFilteredYesTakeACombi,self.dataFilteredNoTakeACombi)
+        self.demo = p
         self.demo.show()
     def printPoligono(self):
         print("abriendo poligono")
-        self.demo = WindowGraphics()
+        pol = WindowGraphics()
+        pol.poligono(self.dataFilteredYesTakeACombi,self.dataFilteredNoTakeACombi)
+        self.demo = pol
         self.demo.show()
 
 if __name__ == '__main__':
