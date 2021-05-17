@@ -7,32 +7,6 @@ from PyQt5 import uic
 from matplotlib import pyplot
 import pandas as pd
 
-""" esta clase es la GUI generica para instanciar
-las diferentes maneras de mostrar los datos """
-class WindowGraphics(QWidget):
-    def __init__(self):
-        super().__init__()
-        uic.loadUi('./Views/grafica.ui', self)
-        self.btnVolver.clicked.connect(self.close)
-    def barras(x,takenCombi,noTakenCombi):
-        money = takenCombi['dinero invertido'] #<-- Guarda los montos registrados
-        pyplot.title('Grafica de barras')
-        pyplot.ylabel(money)
-        
-    def histograma(x,takenCombi,noTakenCombi):
-        print(takenCombi['N de combis'])
-        """
-        hay que hacer algo con los rangos, ya que estamos trabajando con numeros
-        por lo que: ----> 3 a 4  <---- no es un numero
-        """
-    def ojiva(x,takenCombi,noTakenCombi):
-        print('ojiva')
-    def poligono(x,data):
-        print('poligono')
-    def pastel(x,takenCombi,noTakenCombi):
-        print('pastel')
-
-
 #Clase Main, donde se ejecuta la aplicacion Principal
 class Main(QMainWindow):
     def __init__(self):
@@ -55,33 +29,35 @@ class Main(QMainWindow):
         self.btnExit.clicked.connect(self.close) #<--- cerrar la aplicación
 
     def printBarras(self):
-        b = WindowGraphics()
-        b.barras(self.dataFilteredYesTakeACombi,self.dataFilteredNoTakeACombi)
-        self.demo = b
-        self.demo.show()
+        money = self.dataFilteredYesTakeACombi['dinero invertido'] #<-- Guarda los montos registrados
+        pyplot.title('Grafica de barras')
+        dict ={1:0}
+        for m in money:
+            dict.update({m:1})#<--- se llena el diccionario
+        items = dict.keys() #<- se obtiene las llaves del diccionario
+        for item in items:
+            count = 0       #se hace un conteo
+            for m in money: # para ver cuantas veces se repite (frecuencia abs)
+                if(item == m):#la cantidad contenida en item
+                    count+=1
+            dict.update({item:count})#<- se actualiza el diccionario
+        print(dict) # todo ok
+        dict.pop(1) # eliminamos el dato basura
+        print(dict.keys()) # eje X
+        print(dict.values()) # eje Y
+        pyplot.bar(dict.keys(),dict.values())
+        pyplot.xlabel("Monto")
+        pyplot.ylabel("Numero de estudiantes")
+        pyplot.show()
+        
     def printHistograma(self):
-        w = WindowGraphics()
-        w.histograma(self.dataFilteredYesTakeACombi,self.dataFilteredNoTakeACombi)
-        self.demo = w
-        self.demo.show()
+        pass
     def printOjiva(self):
-        print("abriendo ojiva")
-        o = WindowGraphics()
-        o.ojiva(self.dataFilteredYesTakeACombi,self.dataFilteredNoTakeACombi)
-        self.demo = o
-        self.demo.show()
+        pass
     def printPastel(self):
-        print("abriendo pastel")
-        p = WindowGraphics()
-        p.pastel(self.dataFilteredYesTakeACombi,self.dataFilteredNoTakeACombi)
-        self.demo = p
-        self.demo.show()
+        pass
     def printPoligono(self):
-        print("abriendo poligono")
-        pol = WindowGraphics()
-        pol.poligono(self.dataFilteredYesTakeACombi,self.dataFilteredNoTakeACombi)
-        self.demo = pol
-        self.demo.show()
+        pass
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
