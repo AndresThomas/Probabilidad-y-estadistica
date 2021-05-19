@@ -4,6 +4,7 @@ import sys
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 from PyQt5 import uic
+from PyQt5.uic.uiparser import QtWidgets
 from matplotlib import pyplot
 import pandas as pd
 
@@ -31,6 +32,37 @@ class Main(QMainWindow):
         self.btnPoligono.clicked.connect(self.printPoligono)
         self.btnExit.clicked.connect(self.close) #<--- cerrar la aplicación
 
+        #TABLEVIEW - Datos Discretos
+        self.tableView_Discretos.setColumnWidth(0,120) #Columna 1
+        self.tableView_Discretos.setColumnWidth(1,170) #Columna 2
+        self.tableView_Discretos.setColumnWidth(2,170) #Columna 3
+        self.tableView_Discretos.setColumnWidth(3,150) #Columna 4
+        self.tableView_Discretos.setColumnWidth(4,150) #Columna 5
+        self.tableView_Discretos.setColumnWidth(5,150) #Columna 6
+        self.tableView_Discretos.setColumnWidth(6,209) #Columna 7
+
+        #TableVIEW - Datos Continuos
+        #TABLEVIEW - Datos Discretos
+        self.tableView_Continuos.setColumnWidth(0,120) #Columna 1
+        self.tableView_Continuos.setColumnWidth(1,170) #Columna 2
+        self.tableView_Continuos.setColumnWidth(2,170) #Columna 3
+        self.tableView_Continuos.setColumnWidth(3,150) #Columna 4
+        self.tableView_Continuos.setColumnWidth(4,150) #Columna 5
+        self.tableView_Continuos.setColumnWidth(5,150) #Columna 6
+        self.tableView_Continuos.setColumnWidth(6,209) #Columna 7
+
+        
+
+#------------------------ LLENAR DATOS EN LA TABLA ------------------------
+    def loadData(self):
+        clase = [{"clase": 1},{"clase": 2}, {"clase": 3}, {"clase": 4}, {"clase": 5}, {"clase": 6}, {"clase": 7}, {"clase": 8}, {"clase": 9}, {"clase": 10}]
+        row = 0
+        self.tableView_Discretos.setRowCount(len(clase))
+        for cl in clase:
+            self.tableView_Discretos.setItem(row, 0, QtWidgets.QTableWidgetItem(cl["clase"]))
+            row = row + 1
+
+#------------------------ GRAFICAS -----------------------------------------
     def printBarras(self):
         money = self.dataFilteredYesTakeACombi['dinero invertido'] #<-- Guarda los montos registrados
         pyplot.title('Grafica de barras')
@@ -65,6 +97,8 @@ class Main(QMainWindow):
     def printPoligono(self):
         pass
 
+
+##sintaxis del main
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = Main()

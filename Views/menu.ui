@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1240</width>
-    <height>877</height>
+    <width>1600</width>
+    <height>900</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,9 +21,9 @@
     <property name="geometry">
      <rect>
       <x>-10</x>
-      <y>-30</y>
+      <y>20</y>
       <width>291</width>
-      <height>891</height>
+      <height>831</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -169,13 +169,169 @@ color: white;
      </property>
     </widget>
    </widget>
+   <widget class="QScrollArea" name="scrollArea">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>90</y>
+      <width>1141</width>
+      <height>611</height>
+     </rect>
+    </property>
+    <property name="sizeAdjustPolicy">
+     <enum>QAbstractScrollArea::AdjustIgnored</enum>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollContents">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1139</width>
+       <height>609</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="datos_Discretos">
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>16</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(218, 218, 218);</string>
+        </property>
+        <property name="text">
+         <string>Números de transportes utilizados (Datos Discretos)</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::AutoText</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tableView_Discretos">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(40, 40, 40);</string>
+        </property>
+        <column>
+         <property name="text">
+          <string>Clase</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Limite Inf.</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Limite Sup.</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Marca de Clase</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Frecuencia Abs.</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Frecuencia Rel.</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Frecuencia Abs. Acumulada</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="datos_Continuos">
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>16</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(218, 218, 218);</string>
+        </property>
+        <property name="text">
+         <string>Distancia entre el domicilio del estudiante y la UPCH (Datos Continuos)</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::AutoText</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tableView_Continuos">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(40, 40, 40);</string>
+        </property>
+        <column>
+         <property name="text">
+          <string>Clase</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Limite Inf.</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Limite Sup.</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Marca de Clase</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Frecuencia Abs.</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Frecuencia Rel.</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Frecuencia Abs. Acumulada</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
    <widget class="QLabel" name="text_Titulo">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>50</y>
-      <width>371</width>
-      <height>41</height>
+      <x>760</x>
+      <y>20</y>
+      <width>381</width>
+      <height>37</height>
      </rect>
     </property>
     <property name="font">
@@ -199,7 +355,7 @@ color: white;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1240</width>
+     <width>1600</width>
      <height>26</height>
     </rect>
    </property>
