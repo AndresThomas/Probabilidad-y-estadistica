@@ -1,12 +1,15 @@
 #import libraries PyQt5
 #import the name of the file from designer 
 import sys
+import pandas as pd
+from tkinter import Tk
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 from PyQt5 import uic
 from PyQt5.uic.uiparser import QtWidgets
 from matplotlib import pyplot
-import pandas as pd
+
+
 
 #Clase Main, donde se ejecuta la aplicacion Principal
 class Main(QMainWindow):
@@ -80,7 +83,7 @@ class Main(QMainWindow):
         dict.pop(1) # eliminamos el dato basura
         #print(dict.keys()) # eje X
         #print(dict.values()) # eje Y
-        barras = pyplot.bar(dict.keys(),dict.values())
+        pyplot.bar(dict.keys(),dict.values())
         pyplot.xlabel("Monto")
         pyplot.ylabel("Numero de estudiantes")
         pyplot.show()
@@ -100,8 +103,10 @@ class Main(QMainWindow):
 
 ##sintaxis del main
 if __name__ == '__main__':
+    screen = Tk()
     app = QApplication(sys.argv)
     window = Main()
+    window.resize(screen.winfo_screenwidth(),screen.winfo_screenheight()) # <-- se ajusta al tamaño de la pantalla
     window.setWindowTitle("Uso del Transporte") #<--- colocar nombre a la aplicacion
     window.setWindowIcon(QIcon('./Resources/icon.png')) #<--- colocar icono para la aplicacion
     window.show()
