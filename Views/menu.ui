@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1571</width>
+    <width>1500</width>
     <height>1024</height>
    </rect>
   </property>
@@ -21,9 +21,15 @@
     <property name="geometry">
      <rect>
       <x>-10</x>
+<<<<<<< HEAD
       <y>80</y>
       <width>291</width>
       <height>831</height>
+=======
+      <y>40</y>
+      <width>200</width>
+      <height>701</height>
+>>>>>>> refs/remotes/origin/main
      </rect>
     </property>
     <property name="styleSheet">
@@ -33,11 +39,14 @@ border: 1px solid white;</string>
     <widget class="QLabel" name="text_Graficas">
      <property name="geometry">
       <rect>
-       <x>90</x>
-       <y>70</y>
-       <width>111</width>
+       <x>50</x>
+       <y>10</y>
+       <width>100</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
      </property>
      <property name="styleSheet">
       <string notr="true">color: white;
@@ -51,8 +60,8 @@ font: 75 14pt &quot;MS Shell Dlg 2&quot;;
     <widget class="QPushButton" name="btnBarras">
      <property name="geometry">
       <rect>
-       <x>60</x>
-       <y>140</y>
+       <x>20</x>
+       <y>60</y>
        <width>160</width>
        <height>50</height>
       </rect>
@@ -77,8 +86,8 @@ color: white;
     <widget class="QPushButton" name="btnHistograma">
      <property name="geometry">
       <rect>
-       <x>60</x>
-       <y>240</y>
+       <x>20</x>
+       <y>130</y>
        <width>160</width>
        <height>50</height>
       </rect>
@@ -96,8 +105,8 @@ color: white;</string>
     <widget class="QPushButton" name="btnPastel">
      <property name="geometry">
       <rect>
-       <x>60</x>
-       <y>340</y>
+       <x>20</x>
+       <y>200</y>
        <width>160</width>
        <height>50</height>
       </rect>
@@ -115,8 +124,8 @@ color: white;</string>
     <widget class="QPushButton" name="btnPoligono">
      <property name="geometry">
       <rect>
-       <x>60</x>
-       <y>440</y>
+       <x>20</x>
+       <y>270</y>
        <width>160</width>
        <height>50</height>
       </rect>
@@ -134,8 +143,8 @@ color: white;</string>
     <widget class="QPushButton" name="btnOjiva">
      <property name="geometry">
       <rect>
-       <x>60</x>
-       <y>540</y>
+       <x>20</x>
+       <y>340</y>
        <width>160</width>
        <height>50</height>
       </rect>
@@ -153,8 +162,8 @@ color: white;</string>
     <widget class="QPushButton" name="btnExit">
      <property name="geometry">
       <rect>
-       <x>60</x>
-       <y>740</y>
+       <x>20</x>
+       <y>490</y>
        <width>160</width>
        <height>50</height>
       </rect>
@@ -168,12 +177,31 @@ color: white;
       <string>EXIT</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="btnTendencia">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>410</y>
+       <width>160</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: 1px solid;
+border-radius: 25px;
+background-color: rgb(0, 163, 120);
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>Tendecnias</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QScrollArea" name="scrollArea">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>90</y>
+      <x>190</x>
+      <y>40</y>
       <width>1141</width>
       <height>611</height>
      </rect>
@@ -328,9 +356,9 @@ color: white;
    <widget class="QLabel" name="text_Titulo">
     <property name="geometry">
      <rect>
-      <x>760</x>
-      <y>20</y>
-      <width>381</width>
+      <x>500</x>
+      <y>0</y>
+      <width>380</width>
       <height>37</height>
      </rect>
     </property>
@@ -352,8 +380,8 @@ color: white;
    <widget class="QWidget" name="resultados" native="true">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>790</y>
+      <x>190</x>
+      <y>710</y>
       <width>1141</width>
       <height>191</height>
      </rect>
@@ -640,8 +668,8 @@ color: white;
    <widget class="QLabel" name="calculos">
     <property name="geometry">
      <rect>
-      <x>740</x>
-      <y>730</y>
+      <x>460</x>
+      <y>670</y>
       <width>451</width>
       <height>31</height>
      </rect>
@@ -667,8 +695,8 @@ color: white;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1571</width>
-     <height>26</height>
+     <width>1500</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>
