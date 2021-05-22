@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 from PyQt5 import uic
 from matplotlib import pyplot
 import math
+from collections import Counter
 
 import statistics as stats #<---- media aritmetica
 
@@ -171,7 +172,6 @@ class DatosContinuos:
         frecAbsoluta = self.getListaFrecAbsoluta()
         totalFrecAbsoluta = sum(self.getListaFrecAbsoluta())
         lista = []
-
         for x in frecAbsoluta:
             operacion = (x * 100) / totalFrecAbsoluta
             lista.append(round(operacion,2)) #<--- round se utiliza para redondear a 2 decimales
@@ -211,8 +211,39 @@ def tendenciaCentral():
 #-------------------------------- ---------------------#  
         
 class DatosDiscretos:
-    def calculosDiscretos(self):
-        print("Inicio Calculos Discretos")
+    def getListaDatos(self):
+        lista = []
+        indice = 0
+        for x in dicts:
+            lista.insert(indice, x.get("N de combis"))
+            indice+=1
+        lista.sort() #<--- ordenar lista de manera ascendente
+        return lista
+
+    def getListaValores(self):
+        datos = self.getListaDatos()
+        lista = Counter(datos) #<---- obtener los valores de cada llave
+        lista = list(lista.keys()) #obtener las llaves y luego convertilo a una lista
+        return lista
+
+    def getListaFrecAbsoluta(self):
+        datos = self.getListaDatos()
+        lista = Counter(datos) #<---- obtener los valores de cada llave
+        lista = list(lista.values())
+        return lista
+
+    def getListaFrecRelativa(self):
+        frecAbsoluta = self.getListaFrecAbsoluta()
+        totalFrecAbsoluta = sum(self.getListaFrecAbsoluta())
+        lista = []
+        for x in frecAbsoluta:
+            operacion = (x * 100) / totalFrecAbsoluta
+            lista.append(round(operacion,2)) #<--- round se utiliza para redondear a 2 decimales
+
+        return lista
+
+
+
 
 
 #Clase Main, donde se ejecuta la aplicacion Principal
@@ -232,6 +263,7 @@ class Main(QMainWindow):
         IsAWomen = self.df['Sexo'] == 'Mujer'
         self.womenPoblation = self.df[IsAWomen]
 
+        datosDiscretos = DatosDiscretos()
         datosContinuos = DatosContinuos()
         tendencia = tendenciaCentral()
       
@@ -245,13 +277,9 @@ class Main(QMainWindow):
         self.btnExit.clicked.connect(self.close) #<--- cerrar la aplicación
 
         #TABLEVIEW - Datos Discretos
-        self.tableView_Discretos.setColumnWidth(0,120) #Columna 1
-        self.tableView_Discretos.setColumnWidth(1,170) #Columna 2
-        self.tableView_Discretos.setColumnWidth(2,170) #Columna 3
-        self.tableView_Discretos.setColumnWidth(3,150) #Columna 4
-        self.tableView_Discretos.setColumnWidth(4,150) #Columna 5
-        self.tableView_Discretos.setColumnWidth(5,150) #Columna 6
-        self.tableView_Discretos.setColumnWidth(6,209) #Columna 7
+        self.tableView_Discretos.setColumnWidth(0,350) #Columna 1
+        self.tableView_Discretos.setColumnWidth(1,350) #Columna 2
+        self.tableView_Discretos.setColumnWidth(2,360) #Columna 3
 
         #TableVIEW - Datos Continuos
         self.tableView_Continuos.setColumnWidth(0,120) #Columna 1
@@ -265,7 +293,18 @@ class Main(QMainWindow):
         self.loadData_Discretos() #<--- llenar tableView_Discretos
         self.loadData_Continuos()
 
+        #LABELS - DATOS DISCRETOS
+        sumFrecAbs = sum(datosDiscretos.getListaFrecAbsoluta())
+        sumFrecRel = sum(datosDiscretos.getListaFrecRelativa())
+        self.label_FrecuenciaAbsTotal_Discretos_Resultados.setText(str(sumFrecAbs))
+        self.label_FrecuenciaRelTotal_Discretos_Resultados.setText(str(sumFrecRel))
+
         #LABELS - DATOS CONTINUOS
+        sumFrecAbs_2 = sum(datosContinuos.getListaFrecAbsoluta())
+        sumFrecRel_2 = sum(datosContinuos.getListaFrecRelativa())
+        self.label_FrecuenciaAbsTotal_Continuos_Resultados.setText(str(sumFrecAbs_2))
+        self.label_FrecuenciaRelTotal_Continuos_Resultados.setText(str(sumFrecRel_2))
+
         self.label_NDeClases_Resultado.setText(str(datosContinuos.getNoDeClase()))
         self.label_Rango_Resultado.setText(str(datosContinuos.getRango()))
         self.label_AnchoClases_Resultado.setText(str(datosContinuos.getAnchoDeClase()))
@@ -276,30 +315,35 @@ class Main(QMainWindow):
         self.label_Varianza_Resultado.setText(str(tendencia.varianza))
         self.label_DesviacionEstandar_Resultado.setText(str(tendencia.desviacion))
         
-
+        
 #------------------------ LLENAR DATOS EN LA TABLA ------------------------
     def loadData_Discretos(self):
+        datosDiscretos = DatosDiscretos()
+        valores = datosDiscretos.getListaValores() 
+        frecAbsoluta = datosDiscretos.getListaFrecAbsoluta()
+        frecRelativa = datosDiscretos.getListaFrecRelativa()
+        tamano = len((valores))
         row = 0
-        self.tableView_Discretos.setRowCount(len(dicts))
-        for x in dicts:
-            self.tableView_Discretos.setItem(row, 0, QtWidgets.QTableWidgetItem( str(x.get("N de combis"))) )
+        
+        self.tableView_Discretos.setRowCount(tamano)
+        while row < tamano:
+            self.tableView_Discretos.setItem(row, 0, QtWidgets.QTableWidgetItem(str(valores[row])))
+            self.tableView_Discretos.setItem(row, 1, QtWidgets.QTableWidgetItem(str(frecAbsoluta[row])))
+            self.tableView_Discretos.setItem(row, 2, QtWidgets.QTableWidgetItem(str(frecRelativa[row])))
             row=row+1
 
     def loadData_Continuos(self):
         datosContinuos = DatosContinuos()
-        
-        print("Datos Continuos")
         clases = datosContinuos.getListaClases()
+        tamano = len(clases)
         marcaDeClase = datosContinuos.getListaMarcaDeClase()
         frecAbsoluta = datosContinuos.getListaFrecAbsoluta()
         frecRelativa = datosContinuos.getListaFrecRelativa()
-        frecAbsolutaAcumulada = datosContinuos.getListaFrecAbsAcumulada()
-        
-
+        frecAbsolutaAcumulada = datosContinuos.getListaFrecAbsAcumulada()        
         row = 0
 
-        self.tableView_Continuos.setRowCount(datosContinuos.getNoDeClase())
-        while row < 9:
+        self.tableView_Continuos.setRowCount(tamano)
+        while row < tamano:
             self.tableView_Continuos.setItem(row, 0, QtWidgets.QTableWidgetItem(str(clases[row])))
             self.tableView_Continuos.setItem(row, 3, QtWidgets.QTableWidgetItem(str(marcaDeClase[row])))
             self.tableView_Continuos.setItem(row, 4, QtWidgets.QTableWidgetItem(str(frecAbsoluta[row])))
