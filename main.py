@@ -3,16 +3,221 @@
 import sys
 import pandas as pd
 from tkinter import Tk
+from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 from PyQt5 import uic
-from PyQt5.uic.uiparser import QtWidgets
 from matplotlib import pyplot
+import math
 
+import statistics as stats #<---- media aritmetica
+
+#Leer archivo csv para hacer los calculos
+df = pd.read_csv('file.csv', delimiter=',')
+dicts = df.to_dict('records')
+
+class DatosContinuos:
+    def getNoDeClase(self):
+        cantidadDatos = len(dicts)
+        noDeClase = round(1 + 3.3*math.log10(cantidadDatos))      
+        return noDeClase
+
+    def getListaClases(self):
+        noDeClases = self.getNoDeClase()
+        x = 1
+        indice = 0
+        while indice < noDeClases:
+            if indice == 0:
+                clases = [x]
+            else:
+                clases.insert(indice, x)
+            x+=1
+            indice+=1
+        return clases
+
+    def getListaDatos(self):
+        lista = []
+        indice = 0
+        for x in dicts:
+            lista.insert(indice, x.get("distancia"))
+            indice+=1
+        lista.sort() #<--- ordenar lista de manera ascendente
+        return lista
+
+    def getRango(self):
+        lista = self.getListaDatos()
+        menor = min(lista)
+        mayor = max(lista)
+        rango = mayor - menor
+        return rango
+
+    def getAnchoDeClase(self):
+        rango = self.getRango()
+        noDeClase = self.getNoDeClase()
+        anchoDeClase = rango / noDeClase
+        return anchoDeClase
+
+    def getLimites(self):
+        inicial = min(self.getListaDatos())
+        anchoDeClase = self.getAnchoDeClase()
+        limites = []
+        m = self.getNoDeClase() #<--- filas
+        n = 2 #<----- columnas
+
+        for f in range (m):
+            limites.append([])
+            for c in range (n):
+                limites[f].append(0)
+
+        for f in range(m):
+            for c in range(n):
+                if f == 0 and c == 0:
+                    limites [f][c] = inicial         
+                elif c == 0:
+                    limites [f][c] = limites [f-1][c+1] 
+                elif c > 0:
+                    limites[f][c] = limites [f][c-1] + anchoDeClase
+
+        return limites
+
+    def getListaMarcaDeClase(self):
+        limites = self.getLimites()
+        listaMarcaClases = []
+        m = len(limites)
+        n = 2
+
+        for f in range(m):
+            for c in range (n):
+                if c == 0:
+                    suma = (limites[f][c] + limites[f][c+1]) / 2
+                    listaMarcaClases.append(suma)  
+        return listaMarcaClases
+
+    def getListaFrecAbsoluta(self):
+        datos = self.getListaDatos()
+        limites = self.getLimites()
+        m = len(limites)
+        n = 2
+        lim_inf = []
+        lim_sup = []
+        items = []
+        listaFrecuenciaAbsoluta = []
+        
+        for f in range (m):
+            for c in range (n):
+                if c == 0:      
+                    lim_inf.append(limites[f][c])
+                    lim_sup.append(limites[f][c+1])
+
+        for x in datos:
+            if x <= lim_sup[0]:
+                items.append(x)
+
+        listaFrecuenciaAbsoluta.append(len(items))
+        items.clear()
+
+        for x in datos:
+            if x > lim_inf[1] and x <= lim_sup[1]:
+                items.append(x)
+        listaFrecuenciaAbsoluta.append(len(items))
+        items.clear()
+
+        for x in datos:
+            if x > lim_inf[2] and x <= lim_sup[2]:
+                items.append(x)
+        listaFrecuenciaAbsoluta.append(len(items))
+        items.clear()
+
+        for x in datos:
+            if x > lim_inf[3] and x <= lim_sup[3]:
+                items.append(x)
+        listaFrecuenciaAbsoluta.append(len(items))
+        items.clear()
+
+        for x in datos:
+            if x > lim_inf[4] and x <= lim_sup[4]:
+                items.append(x)
+        listaFrecuenciaAbsoluta.append(len(items))
+        items.clear()
+
+        for x in datos:
+            if x > lim_inf[5] and x <= lim_sup[5]:
+                items.append(x)
+        listaFrecuenciaAbsoluta.append(len(items))
+        items.clear()
+
+        for x in datos:
+            if x > lim_inf[6] and x <= lim_sup[6]:
+                items.append(x)
+        listaFrecuenciaAbsoluta.append(len(items))
+        items.clear()
+
+        for x in datos:
+            if x > lim_inf[7] and x <= lim_sup[7]:
+                items.append(x)
+        listaFrecuenciaAbsoluta.append(len(items))
+        items.clear()
+        
+        for x in datos:
+            if x > lim_inf[8] and x <= lim_sup[8]:
+                items.append(x)
+        listaFrecuenciaAbsoluta.append(len(items))
+        items.clear()
+
+        return listaFrecuenciaAbsoluta
+
+
+    def getListaFrecRelativa(self):
+        frecAbsoluta = self.getListaFrecAbsoluta()
+        totalFrecAbsoluta = sum(self.getListaFrecAbsoluta())
+        lista = []
+
+        for x in frecAbsoluta:
+            operacion = (x * 100) / totalFrecAbsoluta
+            lista.append(round(operacion,2)) #<--- round se utiliza para redondear a 2 decimales
+
+        return lista
+
+
+    def getListaFrecAbsAcumulada(self):
+        frecRelativa = self.getListaFrecRelativa()
+        index = 0
+        lista = []
+
+        for x in frecRelativa:
+            if index == 0:
+                lista.append(round(x,2))
+            else:
+                aux = x + lista[index-1]
+                lista.append(round(aux,2)) #<--- round se utiliza para redondear a 2 decimales
+            index+=1
+        return lista
+
+
+#------- ----Multiple Values-------------------------------#
+class TendenciaCentral_Continuo:
+    def __init__(self):
+        datos = DatosContinuos()
+        datos = datos.getListaDatos()
+        self.media_arimetica = round(stats.mean(datos),2) #<--- sacar la media aritmetica
+        self.media_geometrica = round(stats.geometric_mean(datos),2) #<--- sacar la media geometrica
+        self.mediana = round(stats.median(datos),2) #<--- sacar la mediana
+        self.moda = round(stats.mode(datos),2) #<--- sacar la moda
+        self.varianza = round(stats.variance(datos),2) #<--- sacar la varianza muestral
+        self.desviacion = round(stats.stdev(datos),2) #<--- sacar la desviacion estandar
+
+def tendenciaCentral():
+    return TendenciaCentral_Continuo()
+#-------------------------------- ---------------------#  
+        
+class DatosDiscretos:
+    def calculosDiscretos(self):
+        print("Inicio Calculos Discretos")
 
 
 #Clase Main, donde se ejecuta la aplicacion Principal
 class Main(QMainWindow):
+
     def __init__(self):
         super().__init__()
         uic.loadUi('./Views/menu.ui', self)
@@ -26,6 +231,10 @@ class Main(QMainWindow):
         self.menPoblation = self.df[IsAMen]
         IsAWomen = self.df['Sexo'] == 'Mujer'
         self.womenPoblation = self.df[IsAWomen]
+
+        datosContinuos = DatosContinuos()
+        tendencia = tendenciaCentral()
+      
         
         #BOTONES QUE HAY EN EL MENU PRINCIPAL
         self.btnBarras.clicked.connect(self.printBarras)
@@ -45,7 +254,6 @@ class Main(QMainWindow):
         self.tableView_Discretos.setColumnWidth(6,209) #Columna 7
 
         #TableVIEW - Datos Continuos
-        #TABLEVIEW - Datos Discretos
         self.tableView_Continuos.setColumnWidth(0,120) #Columna 1
         self.tableView_Continuos.setColumnWidth(1,170) #Columna 2
         self.tableView_Continuos.setColumnWidth(2,170) #Columna 3
@@ -53,17 +261,59 @@ class Main(QMainWindow):
         self.tableView_Continuos.setColumnWidth(4,150) #Columna 5
         self.tableView_Continuos.setColumnWidth(5,150) #Columna 6
         self.tableView_Continuos.setColumnWidth(6,209) #Columna 7
+        
+        self.loadData_Discretos() #<--- llenar tableView_Discretos
+        self.loadData_Continuos()
 
+        #LABELS - DATOS CONTINUOS
+        self.label_NDeClases_Resultado.setText(str(datosContinuos.getNoDeClase()))
+        self.label_Rango_Resultado.setText(str(datosContinuos.getRango()))
+        self.label_AnchoClases_Resultado.setText(str(datosContinuos.getAnchoDeClase()))
+        self.label_MediaAritmetica_Resultado.setText(str(tendencia.media_arimetica))
+        self.label_MediaGeometrica_Resultado.setText(str(tendencia.media_geometrica))
+        self.label_Mediana_Resultado.setText(str(tendencia.mediana))
+        self.label_Moda_Resultado.setText(str(tendencia.moda))
+        self.label_Varianza_Resultado.setText(str(tendencia.varianza))
+        self.label_DesviacionEstandar_Resultado.setText(str(tendencia.desviacion))
         
 
 #------------------------ LLENAR DATOS EN LA TABLA ------------------------
-    def loadData(self):
-        clase = [{"clase": 1},{"clase": 2}, {"clase": 3}, {"clase": 4}, {"clase": 5}, {"clase": 6}, {"clase": 7}, {"clase": 8}, {"clase": 9}, {"clase": 10}]
+    def loadData_Discretos(self):
         row = 0
-        self.tableView_Discretos.setRowCount(len(clase))
-        for cl in clase:
-            self.tableView_Discretos.setItem(row, 0, QtWidgets.QTableWidgetItem(cl["clase"]))
-            row = row + 1
+        self.tableView_Discretos.setRowCount(len(dicts))
+        for x in dicts:
+            self.tableView_Discretos.setItem(row, 0, QtWidgets.QTableWidgetItem( str(x.get("N de combis"))) )
+            row=row+1
+
+    def loadData_Continuos(self):
+        datosContinuos = DatosContinuos()
+        
+        print("Datos Continuos")
+        clases = datosContinuos.getListaClases()
+        marcaDeClase = datosContinuos.getListaMarcaDeClase()
+        frecAbsoluta = datosContinuos.getListaFrecAbsoluta()
+        frecRelativa = datosContinuos.getListaFrecRelativa()
+        frecAbsolutaAcumulada = datosContinuos.getListaFrecAbsAcumulada()
+        
+
+        row = 0
+
+        self.tableView_Continuos.setRowCount(datosContinuos.getNoDeClase())
+        while row < 9:
+            self.tableView_Continuos.setItem(row, 0, QtWidgets.QTableWidgetItem(str(clases[row])))
+            self.tableView_Continuos.setItem(row, 3, QtWidgets.QTableWidgetItem(str(marcaDeClase[row])))
+            self.tableView_Continuos.setItem(row, 4, QtWidgets.QTableWidgetItem(str(frecAbsoluta[row])))
+            self.tableView_Continuos.setItem(row, 5, QtWidgets.QTableWidgetItem(str(frecRelativa[row])))
+            self.tableView_Continuos.setItem(row, 6, QtWidgets.QTableWidgetItem(str(frecAbsolutaAcumulada[row])))
+            row+=1
+
+        #LIMITES
+        limites = datosContinuos.getLimites()
+        m = len(limites) #<--- filas
+        n = 2 #<----- columnas
+        for f in range(m):
+            for c in range(n):
+                self.tableView_Continuos.setItem(f, c+1, QtWidgets.QTableWidgetItem(str(limites[f][c])))
 
 #------------------------ GRAFICAS -----------------------------------------
     def printBarras(self):
