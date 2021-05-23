@@ -16,12 +16,12 @@ class Main(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('./Views/menu.ui', self)
-        self.data = pd.read_csv('data.csv') #<-- leemos el archivo csv
+        self.data = pd.read_csv('data2.csv') #<-- leemos el archivo csv
         self.df = pd.DataFrame(self.data) #<-- creamos un dataframe
-        filt = self.df['toma combi'] == 'Sí'# <-- devuelve true en los datos donde la expresion evaluada cumple
-        self.dataFilteredYesTakeACombi = self.df[filt] # <- guardamos los elementos donde si toman combi
-        filt = self.df['toma combi'] == 'No'# <-- devuelve true en los datos donde la expresion evaluada cumple
-        self.dataFilteredNoTakeACombi = self.df[filt] # <- guardamos los elementos donde si toman combi
+        #filt = self.df['toma combi'] == 'Sí'# <-- devuelve true en los datos donde la expresion evaluada cumple
+        #self.dataFilteredYesTakeACombi = self.df[filt] # <- guardamos los elementos donde si toman combi
+        #filt = self.df['toma combi'] == 'No'# <-- devuelve true en los datos donde la expresion evaluada cumple
+        #self.dataFilteredNoTakeACombi = self.df[filt] # <- guardamos los elementos donde si toman combi
         IsAMen = self.df['Sexo'] == 'Hombre'
         self.menPoblation = self.df[IsAMen]
         IsAWomen = self.df['Sexo'] == 'Mujer'
@@ -67,24 +67,24 @@ class Main(QMainWindow):
 
 #------------------------ GRAFICAS -----------------------------------------
     def printBarras(self):
-        money = self.dataFilteredYesTakeACombi['dinero invertido'] #<-- Guarda los montos registrados
+        money = self.dataFilteredYesTakeACombi['N de combis'] #<-- Guarda los montos registrados
         pyplot.title('Grafica de barras')
         dict ={1:0}
         for m in money:
             dict.update({m:1})#<--- se llena el diccionario
-        items = dict.keys() #<- se obtiene las llaves del diccionario
-        for item in items:
-            count = 0       #se hace un conteo
-            for m in money: # para ver cuantas veces se repite (frecuencia abs)
-                if(item == m):#la cantidad contenida en item
-                    count+=1
-            dict.update({item:count})#<- se actualiza el diccionario
+        #items = dict.keys() #<- se obtiene las llaves del diccionario
+        #for item in items:
+            #count = 0       #se hace un conteo
+            #for m in money: # para ver cuantas veces se repite (frecuencia abs)
+                #if(item == m):#la cantidad contenida en item
+                    #count+=1
+            #dict.update({item:count})#<- se actualiza el diccionario
         #print(dict) # todo ok
-        dict.pop(1) # eliminamos el dato basura
+        #dict.pop(1) # eliminamos el dato basura
         #print(dict.keys()) # eje X
         #print(dict.values()) # eje Y
-        pyplot.bar(dict.keys(),dict.values())
-        pyplot.xlabel("Monto")
+        #pyplot.bar(dict.keys(),dict.values())
+        pyplot.xlabel("Numero de transportes abordados")
         pyplot.ylabel("Numero de estudiantes")
         pyplot.show()
         
@@ -109,6 +109,7 @@ if __name__ == '__main__':
     window.resize(screen.winfo_screenwidth(),screen.winfo_screenheight()) # <-- se ajusta al tamaño de la pantalla
     window.setWindowTitle("Uso del Transporte") #<--- colocar nombre a la aplicacion
     window.setWindowIcon(QIcon('./Resources/icon.png')) #<--- colocar icono para la aplicacion
+    screen =''
     window.show()
 
     try: 
