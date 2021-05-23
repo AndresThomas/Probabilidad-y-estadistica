@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1193</width>
+    <height>918</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(36, 36, 36);</string>
+  </property>
+  <widget class="QTableWidget" name="tableView_Media">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>120</y>
+     <width>1121</width>
+     <height>255</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 129, 3);
+font: 75 8pt &quot;MS Shell Dlg 2&quot;;
+background-color: rgb(70, 70, 70);
+text-align: center;</string>
+   </property>
+   <column>
+    <property name="text">
+     <string>Clase</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Marca de Clase</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Frecuencia Abs.</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>FiXi</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QLabel" name="calculos_2">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>20</y>
+     <width>331</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(218, 218, 218);</string>
+   </property>
+   <property name="text">
+    <string>DATOS AGRUPADOS</string>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="tableView_Dispersion">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>440</y>
+     <width>1121</width>
+     <height>255</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 129, 3);
+font: 75 8pt &quot;MS Shell Dlg 2&quot;;
+background-color: rgb(70, 70, 70);
+text-align: center;</string>
+   </property>
+   <column>
+    <property name="text">
+     <string>Clase</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Marca de Clase</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Frecuencia Abs.</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>FiX^2</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QLabel" name="calculos_3">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>80</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(218, 218, 218);</string>
+   </property>
+   <property name="text">
+    <string>MEDIA</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="calculos_4">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>400</y>
+     <width>171</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(218, 218, 218);</string>
+   </property>
+   <property name="text">
+    <string>DISPERSION</string>
+   </property>
+  </widget>
+  <widget class="QScrollArea" name="scrollArea_3">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>750</y>
+     <width>821</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(40, 40, 40);</string>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="ScrollContents_Calculos_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>819</width>
+      <height>149</height>
+     </rect>
+    </property>
+    <widget class="QLabel" name="label_Varianza_Resultado_Agrupado">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>40</y>
+       <width>55</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(85, 85, 255);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_Varianza_Agrupado">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>40</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>VARIANZA:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_DesviacionEstandar_Resultado_Agrupado">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>90</y>
+       <width>55</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(85, 85, 255);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_DesviacionEstandar_Agrupado">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>90</y>
+       <width>161</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>DESVIACIÓN ESTANDAR</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_MediaAritmetica_Resultado_Agrupado">
+     <property name="geometry">
+      <rect>
+       <x>460</x>
+       <y>70</y>
+       <width>55</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(85, 85, 255);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_MediaAritmetica_Agrupado">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>70</y>
+       <width>121</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>MEDIA ARITMETICA:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_Mediana_Agrupado">
+     <property name="geometry">
+      <rect>
+       <x>610</x>
+       <y>40</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>MEDIANA:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_Mediana_Resultado_Agrupado">
+     <property name="geometry">
+      <rect>
+       <x>690</x>
+       <y>40</y>
+       <width>55</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(85, 85, 255);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_Moda_Resultado_Agrupado">
+     <property name="geometry">
+      <rect>
+       <x>670</x>
+       <y>90</y>
+       <width>55</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(85, 85, 255);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_Moda_Agrupado">
+     <property name="geometry">
+      <rect>
+       <x>610</x>
+       <y>90</y>
+       <width>51</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>MODA:</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="btnVolver">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>40</y>
+     <width>121</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(41, 82, 124);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>VOLVER</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Total_1_Resultado">
+   <property name="geometry">
+    <rect>
+     <x>990</x>
+     <y>390</y>
+     <width>55</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(85, 85, 255);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Total_1">
+   <property name="geometry">
+    <rect>
+     <x>910</x>
+     <y>390</y>
+     <width>71</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>TOTAL:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Total_2">
+   <property name="geometry">
+    <rect>
+     <x>910</x>
+     <y>710</y>
+     <width>71</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>TOTAL:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Total_2_Resultado">
+   <property name="geometry">
+    <rect>
+     <x>990</x>
+     <y>710</y>
+     <width>55</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(85, 85, 255);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

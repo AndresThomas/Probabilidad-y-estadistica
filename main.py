@@ -194,7 +194,7 @@ class DatosContinuos:
         return lista
 
 
-#------- ----Multiple Values-------------------------------#
+#------------ Multiple Values - Tendenciales centrales y dispersion -------------------------------#
 class TendenciaCentral_Continuo:
     def __init__(self):
         datos = DatosContinuos()
@@ -208,6 +208,63 @@ class TendenciaCentral_Continuo:
 
 def tendenciaCentral():
     return TendenciaCentral_Continuo()
+
+
+class TendenciaCentral_Discreto:
+    def __init__(self):
+        datos = DatosDiscretos()
+        datos = datos.getListaDatos()
+        self.media_arimetica = round(stats.mean(datos),2) #<--- sacar la media aritmetica
+        self.mediana = round(stats.median(datos),2) #<--- sacar la mediana
+        self.moda = round(stats.mode(datos),2) #<--- sacar la moda
+        self.varianza = round(stats.variance(datos),2) #<--- sacar la varianza muestral
+        self.desviacion = round(stats.stdev(datos),2) #<--- sacar la desviacion estandar
+
+def tendenciaCentral_Discreto():
+    return TendenciaCentral_Discreto()
+
+
+class TendenciaCentral_DatosAgrupados:
+    def __init__(self):
+        datos = DatosAgrupados()
+        total_FrecAbs = sum(datos.getListaFrecAbsoluta())
+        totalFrec_Marca_Media = sum(datos.getListaFrecuencia_Marca_Media())
+        self.media_arimetica = round(((1/total_FrecAbs)*totalFrec_Marca_Media),2) #<--- sacar la media aritmetica
+        
+        #MEDIANA
+        cantidadClases = len(datos.getListaClases())
+        cantidadClases = int(cantidadClases)
+        mediana_ = 0
+
+        if cantidadClases % 2 == 0:
+            print("Cantidad de clases par")
+            index_1 = int(cantidadClases/2)
+            index_2 = int((cantidadClases/2) + 1)
+            
+            marca_1 = datos.getListaMarcaDeClase().__getitem__(index_1)
+            marca_2 = datos.getListaMarcaDeClase().__getitem__(index_2)
+            mediana_ =(marca_1 + marca_2)/2
+        else:
+            print("Cantidad de clases impar")
+            clase =int((cantidadClases + 1)/2)
+            mediana_ = datos.getListaMarcaDeClase().__getitem__(clase-1) #<--- se le resta -1 ya que toma el indice 5, en lugar del 4, porque va de 0 a 8
+               
+        self.mediana = round(mediana_,2) #<--- sacar la mediana de clases
+
+        marcaDeClase = datos.getListaMarcaDeClase()
+        self.moda = round(stats.mode(marcaDeClase),2) #<--- sacar la moda de clases
+       
+        totalFrec_Marca_Dispersion = sum(datos.getListaFrecuencia_Marca_Dispersion())
+        media_arimetica_2 = pow(self.media_arimetica,2)
+        operacion_varianza = ((totalFrec_Marca_Dispersion - (total_FrecAbs * media_arimetica_2))/(total_FrecAbs-1)) #<--- sacar la varianza muestral de datos agrupados
+        self.varianza = round(operacion_varianza,2) #<--- sacar la varianza muestral de datos agrupados
+
+        self.desviacion = round(math.sqrt(self.varianza),2) #<--- sacar la desviacion estandar de datos agrupados
+    
+
+def tendenciaCentral_DatosAgrupados():
+    return TendenciaCentral_DatosAgrupados()
+
 #-------------------------------- ---------------------#  
         
 class DatosDiscretos:
@@ -243,12 +300,135 @@ class DatosDiscretos:
         return lista
 
 
+class DatosAgrupados:
+    def getListaClases(self):
+        datosContinuos = DatosContinuos()       
+        lista = datosContinuos.getListaClases()
+        return lista
 
+    def getListaMarcaDeClase(self):
+        datosContinuos = DatosContinuos()
+        lista = datosContinuos.getListaMarcaDeClase()
+        return lista
+
+    def getListaFrecAbsoluta(self):
+        datosContinuos = DatosContinuos()
+        lista = datosContinuos.getListaFrecAbsoluta()
+        return lista
+
+    def getListaFrecuencia_Marca_Media(self):
+        lista = []
+        tamano = len(self.getListaClases())
+        index = 0
+        while index < tamano:
+            clase = self.getListaMarcaDeClase().__getitem__(index)
+            frecAbsoluta = self.getListaFrecAbsoluta().__getitem__(index)
+            value =  clase * frecAbsoluta
+            lista.append(value)
+            index+=1
+        return lista
+
+    def getListaFrecuencia_Marca_Dispersion(self):
+        lista = []
+        tamano = len(self.getListaClases())
+        index = 0
+        while index < tamano:
+            clase = self.getListaMarcaDeClase().__getitem__(index)
+            frecAbsoluta = self.getListaFrecAbsoluta().__getitem__(index)
+            value =  clase * pow(frecAbsoluta,2)
+            lista.append(value)
+            index+=1
+        return lista
+
+
+class WindowGraphics(QWidget):
+    def __init__(self):
+        super().__init__()
+        uic.loadUi('./Views/secondWindow.ui', self)
+        self.btnVolver.clicked.connect(self.close)
+
+        datosContinuos = DatosContinuos()
+        tendencia = tendenciaCentral()
+        self.label_NDeClases_Resultado.setText(str(datosContinuos.getNoDeClase()))
+        self.label_Rango_Resultado.setText(str(datosContinuos.getRango()))
+        self.label_AnchoClases_Resultado.setText(str(datosContinuos.getAnchoDeClase()))
+        self.label_MediaAritmetica_Resultado.setText(str(tendencia.media_arimetica))
+        self.label_MediaGeometrica_Resultado.setText(str(tendencia.media_geometrica))
+        self.label_Mediana_Resultado.setText(str(tendencia.mediana))
+        self.label_Moda_Resultado.setText(str(tendencia.moda))
+        self.label_Varianza_Resultado.setText(str(tendencia.varianza))
+        self.label_DesviacionEstandar_Resultado.setText(str(tendencia.desviacion))
+
+        tendencia_Discreto = tendenciaCentral_Discreto()
+        self.label_MediaAritmetica_Resultado_Discreto.setText(str(tendencia_Discreto.media_arimetica))
+        self.label_Mediana_Resultado_Discreto.setText(str(tendencia_Discreto.mediana))
+        self.label_Moda_Resultado_Discreto.setText(str(tendencia_Discreto.moda))
+        self.label_Varianza_Resultado_Discreto.setText(str(tendencia_Discreto.varianza))
+        self.label_DesviacionEstandar_Resultado_Discreto.setText(str(tendencia_Discreto.desviacion))
+
+
+class WindowGraphics_DatosAgrupados(QWidget):
+    def __init__(self):
+        super().__init__()
+        uic.loadUi('./Views/datosAgrupados.ui', self)
+        self.btnVolver.clicked.connect(self.close)
+
+        #Table View de la Media
+        self.tableView_Media.setColumnWidth(0,250) #Columna 1
+        self.tableView_Media.setColumnWidth(1,288) #Columna 2
+        self.tableView_Media.setColumnWidth(2,290) #Columna 3
+        self.tableView_Media.setColumnWidth(3,290) #Columna 3
+
+        #Table View de Dispersion
+        self.tableView_Dispersion.setColumnWidth(0,250) #Columna 1
+        self.tableView_Dispersion.setColumnWidth(1,288) #Columna 2
+        self.tableView_Dispersion.setColumnWidth(2,290) #Columna 3
+        self.tableView_Dispersion.setColumnWidth(3,290) #Columna 3
+
+        #Labels de tendencia central y dispersion para datos agrupados
+        datosAgrupados = tendenciaCentral_DatosAgrupados()
+
+        self.label_MediaAritmetica_Resultado_Agrupado.setText(str(datosAgrupados.media_arimetica))
+        self.label_Moda_Resultado_Agrupado.setText(str(datosAgrupados.moda))
+        self.label_Mediana_Resultado_Agrupado.setText(str(datosAgrupados.mediana))
+        self.label_Varianza_Resultado_Agrupado.setText(str(datosAgrupados.varianza))
+        self.label_DesviacionEstandar_Resultado_Agrupado.setText(str(datosAgrupados.desviacion))
+
+        datos_ = DatosAgrupados()
+        total_1 = sum(datos_.getListaFrecuencia_Marca_Media())
+        total_2 = sum(datos_.getListaFrecuencia_Marca_Dispersion())
+        self.label_Total_1_Resultado.setText(str(total_1))
+        self.label_Total_2_Resultado.setText(str(total_2))
+
+        self.loadData_DatosAgrupados()
+
+    def loadData_DatosAgrupados(self):
+        datosAgrupados = DatosAgrupados()
+        clases = datosAgrupados.getListaClases()
+        marcaDeClase = datosAgrupados.getListaMarcaDeClase()
+        frecAbs = datosAgrupados.getListaFrecAbsoluta()
+        frec_Marca_Media = datosAgrupados.getListaFrecuencia_Marca_Media()
+        frec_Marca_Dispersion = datosAgrupados.getListaFrecuencia_Marca_Dispersion()
+        tamano = len(clases)
+        row = 0
+        
+        self.tableView_Media.setRowCount(tamano)
+        self.tableView_Dispersion.setRowCount(tamano)
+        while row < tamano:
+            self.tableView_Media.setItem(row, 0, QtWidgets.QTableWidgetItem(str(clases[row])))
+            self.tableView_Media.setItem(row, 1, QtWidgets.QTableWidgetItem(str(marcaDeClase[row])))
+            self.tableView_Media.setItem(row, 2, QtWidgets.QTableWidgetItem(str(frecAbs[row])))
+            self.tableView_Media.setItem(row, 3, QtWidgets.QTableWidgetItem(str(frec_Marca_Media[row])))
+            
+            self.tableView_Dispersion.setItem(row, 0, QtWidgets.QTableWidgetItem(str(clases[row])))
+            self.tableView_Dispersion.setItem(row, 1, QtWidgets.QTableWidgetItem(str(marcaDeClase[row])))
+            self.tableView_Dispersion.setItem(row, 2, QtWidgets.QTableWidgetItem(str(frecAbs[row])))
+            self.tableView_Dispersion.setItem(row, 3, QtWidgets.QTableWidgetItem(str(frec_Marca_Dispersion[row])))
+            row=row+1
 
 
 #Clase Main, donde se ejecuta la aplicacion Principal
 class Main(QMainWindow):
-
     def __init__(self):
         super().__init__()
         uic.loadUi('./Views/menu.ui', self)
@@ -265,33 +445,33 @@ class Main(QMainWindow):
 
         datosDiscretos = DatosDiscretos()
         datosContinuos = DatosContinuos()
-        tendencia = tendenciaCentral()
-      
-        
+   
         #BOTONES QUE HAY EN EL MENU PRINCIPAL
         self.btnBarras.clicked.connect(self.printBarras)
         self.btnHistograma.clicked.connect(self.printHistograma)
         self.btnOjiva.clicked.connect(self.printOjiva)
         self.btnPastel.clicked.connect(self.printPastel)
         self.btnPoligono.clicked.connect(self.printPoligono)
+        self.btnTendencia.clicked.connect(self.tendenciaCentral)
+        self.btnDatosAgrupados.clicked.connect(self.datosAgrupados)
         self.btnExit.clicked.connect(self.close) #<--- cerrar la aplicación
 
         #TABLEVIEW - Datos Discretos
-        self.tableView_Discretos.setColumnWidth(0,350) #Columna 1
-        self.tableView_Discretos.setColumnWidth(1,350) #Columna 2
-        self.tableView_Discretos.setColumnWidth(2,360) #Columna 3
+        self.tableView_Discretos.setColumnWidth(0,360) #Columna 1
+        self.tableView_Discretos.setColumnWidth(1,360) #Columna 2
+        self.tableView_Discretos.setColumnWidth(2,375) #Columna 3
 
         #TableVIEW - Datos Continuos
         self.tableView_Continuos.setColumnWidth(0,120) #Columna 1
-        self.tableView_Continuos.setColumnWidth(1,170) #Columna 2
-        self.tableView_Continuos.setColumnWidth(2,170) #Columna 3
+        self.tableView_Continuos.setColumnWidth(1,160) #Columna 2
+        self.tableView_Continuos.setColumnWidth(2,160) #Columna 3
         self.tableView_Continuos.setColumnWidth(3,150) #Columna 4
         self.tableView_Continuos.setColumnWidth(4,150) #Columna 5
         self.tableView_Continuos.setColumnWidth(5,150) #Columna 6
-        self.tableView_Continuos.setColumnWidth(6,209) #Columna 7
+        self.tableView_Continuos.setColumnWidth(6,185) #Columna 7
         
-        self.loadData_Discretos() #<--- llenar tableView_Discretos
-        self.loadData_Continuos()
+        self.loadData_Discretos() #<--- llenar tableView Datos Discretos
+        self.loadData_Continuos() #<-- llenar tableView Datos Continuos
 
         #LABELS - DATOS DISCRETOS
         sumFrecAbs = sum(datosDiscretos.getListaFrecAbsoluta())
@@ -304,17 +484,6 @@ class Main(QMainWindow):
         sumFrecRel_2 = sum(datosContinuos.getListaFrecRelativa())
         self.label_FrecuenciaAbsTotal_Continuos_Resultados.setText(str(sumFrecAbs_2))
         self.label_FrecuenciaRelTotal_Continuos_Resultados.setText(str(sumFrecRel_2))
-
-        self.label_NDeClases_Resultado.setText(str(datosContinuos.getNoDeClase()))
-        self.label_Rango_Resultado.setText(str(datosContinuos.getRango()))
-        self.label_AnchoClases_Resultado.setText(str(datosContinuos.getAnchoDeClase()))
-        self.label_MediaAritmetica_Resultado.setText(str(tendencia.media_arimetica))
-        self.label_MediaGeometrica_Resultado.setText(str(tendencia.media_geometrica))
-        self.label_Mediana_Resultado.setText(str(tendencia.mediana))
-        self.label_Moda_Resultado.setText(str(tendencia.moda))
-        self.label_Varianza_Resultado.setText(str(tendencia.varianza))
-        self.label_DesviacionEstandar_Resultado.setText(str(tendencia.desviacion))
-        
         
 #------------------------ LLENAR DATOS EN LA TABLA ------------------------
     def loadData_Discretos(self):
@@ -393,6 +562,16 @@ class Main(QMainWindow):
         
     def printPoligono(self):
         pass
+
+    def tendenciaCentral(self):
+        w = WindowGraphics()
+        self.demo = w
+        self.demo.show()
+
+    def datosAgrupados(self):
+        w = WindowGraphics_DatosAgrupados()
+        self.demo = w
+        self.demo.show()
 
 
 ##sintaxis del main
