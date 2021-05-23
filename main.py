@@ -15,7 +15,7 @@ import statistics as stats #<---- media aritmetica
 
 #Leer archivo csv para hacer los calculos
 df = pd.read_csv('file.csv', delimiter=',')
-dicts = df.to_dict('records')
+dicts = df.to_dict('records') 
 
 class DatosContinuos:
     def getNoDeClase(self):
@@ -34,7 +34,7 @@ class DatosContinuos:
                 clases.insert(indice, x)
             x+=1
             indice+=1
-        return clases
+        return clases #1,2,3,4,5,6,7,8,9
 
     def getListaDatos(self):
         lista = []
@@ -43,7 +43,7 @@ class DatosContinuos:
             lista.insert(indice, x.get("distancia"))
             indice+=1
         lista.sort() #<--- ordenar lista de manera ascendente
-        return lista
+        return lista #mayor a menor en distancia
 
     def getRango(self):
         lista = self.getListaDatos()
@@ -103,7 +103,7 @@ class DatosContinuos:
         lim_sup = []
         items = []
         listaFrecuenciaAbsoluta = []
-        
+        #consigue limite inferior y superior en un rango
         for f in range (m):
             for c in range (n):
                 if c == 0:      
@@ -193,12 +193,12 @@ class DatosContinuos:
             index+=1
         return lista
 
+global_datosContinuos = DatosContinuos()
 
 #------------ Multiple Values - Tendenciales centrales y dispersion -------------------------------#
 class TendenciaCentral_Continuo:
     def __init__(self):
-        datos = DatosContinuos()
-        datos = datos.getListaDatos()
+        datos = global_datosContinuos.getListaDatos()
         self.media_arimetica = round(stats.mean(datos),2) #<--- sacar la media aritmetica
         self.media_geometrica = round(stats.geometric_mean(datos),2) #<--- sacar la media geometrica
         self.mediana = round(stats.median(datos),2) #<--- sacar la mediana
@@ -212,8 +212,7 @@ def tendenciaCentral():
 
 class TendenciaCentral_Discreto:
     def __init__(self):
-        datos = DatosDiscretos()
-        datos = datos.getListaDatos()
+        datos = global_datosDiscretos
         self.media_arimetica = round(stats.mean(datos),2) #<--- sacar la media aritmetica
         self.mediana = round(stats.median(datos),2) #<--- sacar la mediana
         self.moda = round(stats.mode(datos),2) #<--- sacar la moda
@@ -248,12 +247,10 @@ class TendenciaCentral_DatosAgrupados:
             print("Cantidad de clases impar")
             clase =int((cantidadClases + 1)/2)
             mediana_ = datos.getListaMarcaDeClase().__getitem__(clase-1) #<--- se le resta -1 ya que toma el indice 5, en lugar del 4, porque va de 0 a 8
-               
         self.mediana = round(mediana_,2) #<--- sacar la mediana de clases
 
         marcaDeClase = datos.getListaMarcaDeClase()
         self.moda = round(stats.mode(marcaDeClase),2) #<--- sacar la moda de clases
-       
         totalFrec_Marca_Dispersion = sum(datos.getListaFrecuencia_Marca_Dispersion())
         media_arimetica_2 = pow(self.media_arimetica,2)
         operacion_varianza = ((totalFrec_Marca_Dispersion - (total_FrecAbs * media_arimetica_2))/(total_FrecAbs-1)) #<--- sacar la varianza muestral de datos agrupados
@@ -302,18 +299,15 @@ class DatosDiscretos:
 
 class DatosAgrupados:
     def getListaClases(self):
-        datosContinuos = DatosContinuos()       
-        lista = datosContinuos.getListaClases()
+        lista = global_datosContinuos.getListaClases()
         return lista
 
     def getListaMarcaDeClase(self):
-        datosContinuos = DatosContinuos()
-        lista = datosContinuos.getListaMarcaDeClase()
+        lista = global_datosContinuos.getListaMarcaDeClase()
         return lista
 
     def getListaFrecAbsoluta(self):
-        datosContinuos = DatosContinuos()
-        lista = datosContinuos.getListaFrecAbsoluta()
+        lista = global_datosContinuos.getListaFrecAbsoluta()
         return lista
 
     def getListaFrecuencia_Marca_Media(self):
@@ -339,19 +333,17 @@ class DatosAgrupados:
             lista.append(value)
             index+=1
         return lista
-
+global_datosDiscretos = DatosDiscretos()
 
 class WindowGraphics(QWidget):
     def __init__(self):
         super().__init__()
         uic.loadUi('./Views/secondWindow.ui', self)
         self.btnVolver.clicked.connect(self.close)
-
-        datosContinuos = DatosContinuos()
         tendencia = tendenciaCentral()
-        self.label_NDeClases_Resultado.setText(str(datosContinuos.getNoDeClase()))
-        self.label_Rango_Resultado.setText(str(datosContinuos.getRango()))
-        self.label_AnchoClases_Resultado.setText(str(datosContinuos.getAnchoDeClase()))
+        self.label_NDeClases_Resultado.setText(str(global_datosContinuos.getNoDeClase()))
+        self.label_Rango_Resultado.setText(str(global_datosContinuos.getRango()))
+        self.label_AnchoClases_Resultado.setText(str(global_datosContinuos.getAnchoDeClase()))
         self.label_MediaAritmetica_Resultado.setText(str(tendencia.media_arimetica))
         self.label_MediaGeometrica_Resultado.setText(str(tendencia.media_geometrica))
         self.label_Mediana_Resultado.setText(str(tendencia.mediana))
@@ -432,20 +424,13 @@ class Main(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('./Views/menu.ui', self)
-        self.data = pd.read_csv('data2.csv') #<-- leemos el archivo csv
-        self.df = pd.DataFrame(self.data) #<-- creamos un dataframe
-        #filt = self.df['toma combi'] == 'Sí'# <-- devuelve true en los datos donde la expresion evaluada cumple
-        #self.dataFilteredYesTakeACombi = self.df[filt] # <- guardamos los elementos donde si toman combi
-        #filt = self.df['toma combi'] == 'No'# <-- devuelve true en los datos donde la expresion evaluada cumple
-        #self.dataFilteredNoTakeACombi = self.df[filt] # <- guardamos los elementos donde si toman combi
+        self.data = pd.read_csv('file.csv') #<-- leemos el archivo csv
+        self.df = pd.DataFrame(self.data) #<-- creamos un dataframe        
         IsAMen = self.df['Sexo'] == 'Hombre'
         self.menPoblation = self.df[IsAMen]
         IsAWomen = self.df['Sexo'] == 'Mujer'
         self.womenPoblation = self.df[IsAWomen]
 
-        datosDiscretos = DatosDiscretos()
-        datosContinuos = DatosContinuos()
-   
         #BOTONES QUE HAY EN EL MENU PRINCIPAL
         self.btnBarras.clicked.connect(self.printBarras)
         self.btnHistograma.clicked.connect(self.printHistograma)
@@ -457,40 +442,39 @@ class Main(QMainWindow):
         self.btnExit.clicked.connect(self.close) #<--- cerrar la aplicación
 
         #TABLEVIEW - Datos Discretos
-        self.tableView_Discretos.setColumnWidth(0,360) #Columna 1
-        self.tableView_Discretos.setColumnWidth(1,360) #Columna 2
-        self.tableView_Discretos.setColumnWidth(2,375) #Columna 3
+        self.tableView_Discretos.setColumnWidth(0,260) #Columna 1
+        self.tableView_Discretos.setColumnWidth(1,260) #Columna 2
+        self.tableView_Discretos.setColumnWidth(2,260) #Columna 3
 
         #TableVIEW - Datos Continuos
-        self.tableView_Continuos.setColumnWidth(0,120) #Columna 1
-        self.tableView_Continuos.setColumnWidth(1,160) #Columna 2
-        self.tableView_Continuos.setColumnWidth(2,160) #Columna 3
-        self.tableView_Continuos.setColumnWidth(3,150) #Columna 4
-        self.tableView_Continuos.setColumnWidth(4,150) #Columna 5
-        self.tableView_Continuos.setColumnWidth(5,150) #Columna 6
-        self.tableView_Continuos.setColumnWidth(6,185) #Columna 7
+        self.tableView_Continuos.setColumnWidth(0,105) #Columna 1
+        self.tableView_Continuos.setColumnWidth(1,105) #Columna 2
+        self.tableView_Continuos.setColumnWidth(2,105) #Columna 3
+        self.tableView_Continuos.setColumnWidth(3,105) #Columna 4
+        self.tableView_Continuos.setColumnWidth(4,105) #Columna 5
+        self.tableView_Continuos.setColumnWidth(5,105) #Columna 6
+        self.tableView_Continuos.setColumnWidth(6,140) #Columna 7
         
         self.loadData_Discretos() #<--- llenar tableView Datos Discretos
         self.loadData_Continuos() #<-- llenar tableView Datos Continuos
 
         #LABELS - DATOS DISCRETOS
-        sumFrecAbs = sum(datosDiscretos.getListaFrecAbsoluta())
-        sumFrecRel = sum(datosDiscretos.getListaFrecRelativa())
+        sumFrecAbs = sum(global_datosDiscretos.getListaFrecAbsoluta())
+        sumFrecRel = sum(global_datosDiscretos.getListaFrecRelativa())
         self.label_FrecuenciaAbsTotal_Discretos_Resultados.setText(str(sumFrecAbs))
         self.label_FrecuenciaRelTotal_Discretos_Resultados.setText(str(sumFrecRel))
 
         #LABELS - DATOS CONTINUOS
-        sumFrecAbs_2 = sum(datosContinuos.getListaFrecAbsoluta())
-        sumFrecRel_2 = sum(datosContinuos.getListaFrecRelativa())
+        sumFrecAbs_2 = sum(global_datosContinuos.getListaFrecAbsoluta())
+        sumFrecRel_2 = sum(global_datosContinuos.getListaFrecRelativa())
         self.label_FrecuenciaAbsTotal_Continuos_Resultados.setText(str(sumFrecAbs_2))
         self.label_FrecuenciaRelTotal_Continuos_Resultados.setText(str(sumFrecRel_2))
         
 #------------------------ LLENAR DATOS EN LA TABLA ------------------------
     def loadData_Discretos(self):
-        datosDiscretos = DatosDiscretos()
-        valores = datosDiscretos.getListaValores() 
-        frecAbsoluta = datosDiscretos.getListaFrecAbsoluta()
-        frecRelativa = datosDiscretos.getListaFrecRelativa()
+        valores = global_datosDiscretos.getListaValores() 
+        frecAbsoluta = global_datosDiscretos.getListaFrecAbsoluta()
+        frecRelativa = global_datosDiscretos.getListaFrecRelativa()
         tamano = len((valores))
         row = 0
         
@@ -502,13 +486,13 @@ class Main(QMainWindow):
             row=row+1
 
     def loadData_Continuos(self):
-        datosContinuos = DatosContinuos()
-        clases = datosContinuos.getListaClases()
+        #datosContinuos = DatosContinuos()
+        clases = global_datosContinuos.getListaClases()
         tamano = len(clases)
-        marcaDeClase = datosContinuos.getListaMarcaDeClase()
-        frecAbsoluta = datosContinuos.getListaFrecAbsoluta()
-        frecRelativa = datosContinuos.getListaFrecRelativa()
-        frecAbsolutaAcumulada = datosContinuos.getListaFrecAbsAcumulada()        
+        marcaDeClase = global_datosContinuos.getListaMarcaDeClase()
+        frecAbsoluta = global_datosContinuos.getListaFrecAbsoluta()
+        frecRelativa = global_datosContinuos.getListaFrecRelativa()
+        frecAbsolutaAcumulada = global_datosContinuos.getListaFrecAbsAcumulada()        
         row = 0
 
         self.tableView_Continuos.setRowCount(tamano)
@@ -521,7 +505,7 @@ class Main(QMainWindow):
             row+=1
 
         #LIMITES
-        limites = datosContinuos.getLimites()
+        limites = global_datosContinuos.getLimites()
         m = len(limites) #<--- filas
         n = 2 #<----- columnas
         for f in range(m):
@@ -530,29 +514,19 @@ class Main(QMainWindow):
 
 #------------------------ GRAFICAS -----------------------------------------
     def printBarras(self):
-        money = self.dataFilteredYesTakeACombi['N de combis'] #<-- Guarda los montos registrados
-        pyplot.title('Grafica de barras')
-        dict ={1:0}
-        for m in money:
-            dict.update({m:1})#<--- se llena el diccionario
-        #items = dict.keys() #<- se obtiene las llaves del diccionario
-        #for item in items:
-            #count = 0       #se hace un conteo
-            #for m in money: # para ver cuantas veces se repite (frecuencia abs)
-                #if(item == m):#la cantidad contenida en item
-                    #count+=1
-            #dict.update({item:count})#<- se actualiza el diccionario
-        #print(dict) # todo ok
-        #dict.pop(1) # eliminamos el dato basura
-        #print(dict.keys()) # eje X
-        #print(dict.values()) # eje Y
+        pyplot.bar(global_datosDiscretos.getListaValores(),global_datosDiscretos.getListaFrecAbsoluta())
         #pyplot.bar(dict.keys(),dict.values())
-        pyplot.xlabel("Numero de transportes abordados")
-        pyplot.ylabel("Numero de estudiantes")
+        pyplot.xlabel("Valores")
+        pyplot.ylabel("Frecuencia Absoluta")
         pyplot.show()
         
+        
     def printHistograma(self):
-        pass
+        pyplot.xlabel("Valores")
+        pyplot.ylabel("Frecuencia Absoluta")
+        pyplot.hist(global_datosContinuos.getListaFrecAbsoluta(),bins=5,edgecolor='black',density=True)
+        pyplot.show()
+
     def printOjiva(self):
         pass
     def printPastel(self):
@@ -561,7 +535,15 @@ class Main(QMainWindow):
         pyplot.show()
         
     def printPoligono(self):
-        pass
+        pyplot.xlabel("Valores")
+        pyplot.ylabel("Frecuencia Absoluta")
+        #bins = [0,2.5,5,7.5,10,12.5,15,17.5,20,22.5,25,27.5,30,32.5,35,37.5,40,42.5,45,47.5,50,52.5]
+        bins = [0,5,10,15,20,25,30,35,40,45,50,55,60]
+        pyplot.xticks(bins)
+        y,edges,_ =pyplot.hist(global_datosContinuos.getListaDatos(),bins=bins,histtype='step',edgecolor='k')
+        middle_points = 0.5 *(edges[1:]+edges[:-1])
+        pyplot.plot(middle_points,y,'r-*')
+        pyplot.show()
 
     def tendenciaCentral(self):
         w = WindowGraphics()
