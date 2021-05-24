@@ -205,6 +205,7 @@ class TendenciaCentral_Continuo:
         self.moda = round(stats.mode(datos),2) #<--- sacar la moda
         self.varianza = round(stats.variance(datos),2) #<--- sacar la varianza muestral
         self.desviacion = round(stats.stdev(datos),2) #<--- sacar la desviacion estandar
+        self.sesgo = cal_sesgo(self.media_arimetica, self.mediana, self.moda) #<--- sacar el sesgo
 
 def tendenciaCentral():
     return TendenciaCentral_Continuo()
@@ -212,12 +213,13 @@ def tendenciaCentral():
 
 class TendenciaCentral_Discreto:
     def __init__(self):
-        datos = global_datosDiscretos
+        datos = global_datosDiscretos.getListaDatos()
         self.media_arimetica = round(stats.mean(datos),2) #<--- sacar la media aritmetica
         self.mediana = round(stats.median(datos),2) #<--- sacar la mediana
         self.moda = round(stats.mode(datos),2) #<--- sacar la moda
         self.varianza = round(stats.variance(datos),2) #<--- sacar la varianza muestral
         self.desviacion = round(stats.stdev(datos),2) #<--- sacar la desviacion estandar
+        self.sesgo = cal_sesgo(self.media_arimetica, self.mediana, self.moda) #<--- sacar el sesgo
 
 def tendenciaCentral_Discreto():
     return TendenciaCentral_Discreto()
@@ -329,11 +331,24 @@ class DatosAgrupados:
         while index < tamano:
             clase = self.getListaMarcaDeClase().__getitem__(index)
             frecAbsoluta = self.getListaFrecAbsoluta().__getitem__(index)
-            value =  clase * pow(frecAbsoluta,2)
+            value =  round(frecAbsoluta * pow(clase,2),2)
             lista.append(value)
             index+=1
         return lista
 global_datosDiscretos = DatosDiscretos()
+
+def cal_sesgo(media_aritmetica, mediana, moda):
+    sego = None
+    if media_aritmetica < mediana < moda:
+        sego ="Izquierda"
+    elif media_aritmetica == mediana == moda:
+        sego = "Centro"
+    else:
+        if media_aritmetica > mediana > moda:
+            sego ="Derecha"
+            
+    return sego
+    
 
 class WindowGraphics(QWidget):
     def __init__(self):
@@ -350,6 +365,7 @@ class WindowGraphics(QWidget):
         self.label_Moda_Resultado.setText(str(tendencia.moda))
         self.label_Varianza_Resultado.setText(str(tendencia.varianza))
         self.label_DesviacionEstandar_Resultado.setText(str(tendencia.desviacion))
+        self.label_Sesgo_Resultado.setText(str(tendencia.sesgo))
 
         tendencia_Discreto = tendenciaCentral_Discreto()
         self.label_MediaAritmetica_Resultado_Discreto.setText(str(tendencia_Discreto.media_arimetica))
@@ -357,6 +373,7 @@ class WindowGraphics(QWidget):
         self.label_Moda_Resultado_Discreto.setText(str(tendencia_Discreto.moda))
         self.label_Varianza_Resultado_Discreto.setText(str(tendencia_Discreto.varianza))
         self.label_DesviacionEstandar_Resultado_Discreto.setText(str(tendencia_Discreto.desviacion))
+        self.label_Sesgo_Resultado_Discreto.setText(str(tendencia_Discreto.sesgo))
 
 
 class WindowGraphics_DatosAgrupados(QWidget):
