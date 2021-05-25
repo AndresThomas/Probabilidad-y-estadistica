@@ -374,7 +374,6 @@ def cal_sesgo(media_aritmetica, moda, desviacion_estandar):
     else:
         if value > 0:
             sego ="Derecha"
-            
     return sego
     
 
