@@ -2,6 +2,7 @@
 #import the name of the file from designer 
 import sys
 import pandas as pd
+import numpy as np
 from tkinter import Tk
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon
@@ -97,19 +98,28 @@ class DatosContinuos:
     def getListaFrecAbsoluta(self):
         datos = self.getListaDatos()
         limites = self.getLimites()
-        m = len(limites)
-        n = 2
+        listaFrecuenciaAbsoluta = []
+        m = len(limites) #<---- 9 filas
+        n = 2 #<---- 2 columnas
         lim_inf = []
         lim_sup = []
         items = []
-        listaFrecuenciaAbsoluta = []
+
         #consigue limite inferior y superior en un rango
         for f in range (m):
             for c in range (n):
                 if c == 0:      
                     lim_inf.append(limites[f][c])
                     lim_sup.append(limites[f][c+1])
-
+        """
+        for posicion in range(m):
+            count = 0
+            for index in range (len(datos)):          
+                if datos[index] <= lim_sup[posicion] and datos[index] >= lim_inf[posicion]:
+                    count+=1
+            print("Lim Inf: ", lim_inf[posicion], "-", "Lim Sup: ",lim_sup[posicion] ,"Conteo - Posicion ", posicion, ": ", count)
+            listaFrecuenciaAbsoluta.append(count)
+        """
         for x in datos:
             if x <= lim_sup[0]:
                 items.append(x)
@@ -164,7 +174,6 @@ class DatosContinuos:
                 items.append(x)
         listaFrecuenciaAbsoluta.append(len(items))
         items.clear()
-
         return listaFrecuenciaAbsoluta
 
 
@@ -545,7 +554,44 @@ class Main(QMainWindow):
         pyplot.show()
 
     def printOjiva(self):
-        pass
+        lim_inf = []
+        m = len(global_datosContinuos.getLimites()) #<---- 9 filas
+        n = 2 #<---- 2 columnas
+        #consigue limite inferior y superior en un rango
+        for f in range (m):
+            for c in range (n):
+                if c == 0:      
+                    lim_inf.append(global_datosContinuos.getLimites()[f][c])
+
+        #Datos primordiales
+        frec_rel = [0,0,0,0,0,0,0,0,0]
+        class_mark = [0,0,0,0,0,0,0,0,0]
+        total = len(global_datosContinuos.getListaDatos())
+        rango = global_datosContinuos.getRango()
+        nclass = global_datosContinuos.getNoDeClase()
+        anchoclass = (rango / nclass) + 0.0001
+        limite_in_array = lim_inf
+        frecuence = global_datosContinuos.getListaFrecAbsoluta()
+        
+        #Obtener frecuencia relativa
+        for i in range(len(limite_in_array)):
+            j = len(limite_in_array) - (i + 1)
+            frec_rel[i] = ((frecuence[j] / total))
+            class_mark[i] =((limite_in_array[j] + (anchoclass) / 2))
+            
+        #Frecuencia relativa acumulada 
+        fr_rlv_acum = np.zeros(nclass, dtype=float)
+        for i in range(len(frec_rel)):
+            if(i == 0):
+                fr_rlv_acum[i] = frec_rel[i]
+            else:
+                fr_rlv_acum[i] = round(fr_rlv_acum[i-1] + frec_rel[i], 4)
+        
+        pyplot.title("Ojiva")
+        pyplot.plot(fr_rlv_acum)
+        pyplot.ylabel("Frecuencia relativa acumulada")
+        pyplot.show()
+
     def printPastel(self):
         labels = ['Hombres','Mujeres']
         pyplot.pie([self.menPoblation.__len__(),self.womenPoblation.__len__()],labels=labels,autopct='%.2f %%')
