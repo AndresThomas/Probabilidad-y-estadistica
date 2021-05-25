@@ -265,12 +265,8 @@ class TendenciaCentral_Discreto:
         self.moda = round(stats.mode(datos),2) #<--- sacar la moda
         self.varianza = round(stats.variance(datos),2) #<--- sacar la varianza muestral
         self.desviacion = round(stats.stdev(datos),2) #<--- sacar la desviacion estandar
-<<<<<<< HEAD
         self.sesgo = cal_sesgo(self.media_arimetica, self.mediana, self.moda) #<--- sacar el sesgo
-        
-=======
-        self.sesgo = cal_sesgo(self.media_arimetica, self.moda, self.desviacion) #<--- sacar el sesgo
->>>>>>> c8a9a0f84eac0538ec586569dd647d30666008a5
+        calcular_media_truncada(datos)
 
 def tendenciaCentral_Discreto():
     return TendenciaCentral_Discreto()
