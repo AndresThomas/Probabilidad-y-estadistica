@@ -120,6 +120,23 @@ class DatosContinuos:
             print("Lim Inf: ", lim_inf[posicion], "-", "Lim Sup: ",lim_sup[posicion] ,"Conteo - Posicion ", posicion, ": ", count)
             listaFrecuenciaAbsoluta.append(count)
         """
+
+        """
+        listFrecuenciaDatos = self.__frecuenciaAbsolutaDatos.copy()
+        listLimites = self.__limitesClases
+        anterior = 0
+        for limites in listLimites:
+            superio = limites[1]
+            acumulativo = 0
+            for frecuencia in listFrecuenciaDatos:
+                valor = frecuencia[0]
+                if valor<= superio:
+                    acumulativo += frecuencia[1]
+            listFrecuencia.append(acumulativo-anterior)
+            anterior=acumulativo
+        return listFrecuencia
+        """
+        
         for x in datos:
             if x <= lim_sup[0]:
                 items.append(x)
@@ -174,6 +191,7 @@ class DatosContinuos:
                 items.append(x)
         listaFrecuenciaAbsoluta.append(len(items))
         items.clear()
+        
         return listaFrecuenciaAbsoluta
 
 
@@ -215,7 +233,7 @@ class TendenciaCentral_Continuo:
         self.moda = round(stats.mode(datos),2) #<--- sacar la moda
         self.varianza = round(stats.variance(datos),2) #<--- sacar la varianza muestral
         self.desviacion = round(stats.stdev(datos),2) #<--- sacar la desviacion estandar
-        self.sesgo = cal_sesgo(self.media_arimetica, self.mediana, self.moda) #<--- sacar el sesgo
+        self.sesgo = cal_sesgo(self.media_arimetica, self.moda, self.desviacion) #<--- sacar el sesgo
 
 def tendenciaCentral():
     return TendenciaCentral_Continuo()
@@ -247,8 +265,12 @@ class TendenciaCentral_Discreto:
         self.moda = round(stats.mode(datos),2) #<--- sacar la moda
         self.varianza = round(stats.variance(datos),2) #<--- sacar la varianza muestral
         self.desviacion = round(stats.stdev(datos),2) #<--- sacar la desviacion estandar
+<<<<<<< HEAD
         self.sesgo = cal_sesgo(self.media_arimetica, self.mediana, self.moda) #<--- sacar el sesgo
-        calcular_media_truncada(datos)
+        
+=======
+        self.sesgo = cal_sesgo(self.media_arimetica, self.moda, self.desviacion) #<--- sacar el sesgo
+>>>>>>> c8a9a0f84eac0538ec586569dd647d30666008a5
 
 def tendenciaCentral_Discreto():
     return TendenciaCentral_Discreto()
@@ -365,14 +387,15 @@ class DatosAgrupados:
         return lista
 global_datosDiscretos = DatosDiscretos()
 
-def cal_sesgo(media_aritmetica, mediana, moda):
+def cal_sesgo(media_aritmetica, moda, desviacion_estandar):
     sego = None
-    if media_aritmetica < mediana < moda:
+    value = ((media_aritmetica - moda)/(desviacion_estandar))
+    if value < 0:
         sego ="Izquierda"
-    elif media_aritmetica == mediana == moda:
+    elif value == 0:
         sego = "Centro"
     else:
-        if media_aritmetica > mediana > moda:
+        if value > 0:
             sego ="Derecha"
             
     return sego
