@@ -224,11 +224,32 @@ global_datosContinuos = DatosContinuos()
 
 #------------ Multiple Values - Tendenciales centrales y dispersion -------------------------------#
 class TendenciaCentral_Continuo:
+    def calcular_media_truncada(self,datos):
+        suma = 0
+        suma_inferior=0
+        suma_superior=0
+        
+        for n in datos:
+            suma +=n
+        print(suma)
+        
+        
+        for dato in datos[:20]:
+            suma_inferior += dato
+        print(suma_inferior)
+        
+        for m in datos[179:200]:
+            suma_superior +=m
+        print(suma_superior)
+        suma -= (suma_inferior+suma_superior) 
+        return round(suma/160,2)
+
     def __init__(self):
         datos = global_datosContinuos.getListaDatos()
         self.media_arimetica = round(stats.mean(datos),2) #<--- sacar la media aritmetica
         self.media_geometrica = round(stats.geometric_mean(datos),2) #<--- sacar la media geometrica
         self.mediana = round(stats.median(datos),2) #<--- sacar la mediana
+        self.media_truncada =self.calcular_media_truncada(datos)
         self.moda = round(stats.mode(datos),2) #<--- sacar la moda
         self.varianza = round(stats.variance(datos),2) #<--- sacar la varianza muestral
         self.desviacion = round(stats.stdev(datos),2) #<--- sacar la desviacion estandar
@@ -250,7 +271,6 @@ class TendenciaCentral_Discreto:
 
 def tendenciaCentral_Discreto():
     return TendenciaCentral_Discreto()
-
 
 class TendenciaCentral_DatosAgrupados:
     def __init__(self):
