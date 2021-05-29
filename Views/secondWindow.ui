@@ -384,6 +384,38 @@
       <string/>
      </property>
     </widget>
+    <widget class="QLabel" name="label_Media_Truncada_Resultado">
+     <property name="geometry">
+      <rect>
+       <x>710</x>
+       <y>130</y>
+       <width>55</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(85, 85, 255);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_Media_Truncada">
+     <property name="geometry">
+      <rect>
+       <x>590</x>
+       <y>130</y>
+       <width>111</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>MEDIA TRUNCADA: </string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QLabel" name="calculos_2">

@@ -14,8 +14,13 @@ from collections import Counter
 
 import statistics as stats #<---- media aritmetica
 
+"""
+En el archivo readme.md estan las instrucciones para ejecutar bien el programa, ya que se creo
+un entorno virtual para una mejor organizacion del proyecto
+"""
+
 #Leer archivo csv para hacer los calculos
-df = pd.read_csv('file.csv', delimiter=',')
+df = pd.read_csv('file.csv', delimiter=',') #<--- nombre del archivo csv
 dicts = df.to_dict('records') 
 
 class DatosContinuos:
@@ -111,31 +116,6 @@ class DatosContinuos:
                 if c == 0:      
                     lim_inf.append(limites[f][c])
                     lim_sup.append(limites[f][c+1])
-        """
-        for posicion in range(m):
-            count = 0
-            for index in range (len(datos)):          
-                if datos[index] <= lim_sup[posicion] and datos[index] >= lim_inf[posicion]:
-                    count+=1
-            print("Lim Inf: ", lim_inf[posicion], "-", "Lim Sup: ",lim_sup[posicion] ,"Conteo - Posicion ", posicion, ": ", count)
-            listaFrecuenciaAbsoluta.append(count)
-        """
-
-        """
-        listFrecuenciaDatos = self.__frecuenciaAbsolutaDatos.copy()
-        listLimites = self.__limitesClases
-        anterior = 0
-        for limites in listLimites:
-            superio = limites[1]
-            acumulativo = 0
-            for frecuencia in listFrecuenciaDatos:
-                valor = frecuencia[0]
-                if valor<= superio:
-                    acumulativo += frecuencia[1]
-            listFrecuencia.append(acumulativo-anterior)
-            anterior=acumulativo
-        return listFrecuencia
-        """
         
         for x in datos:
             if x <= lim_sup[0]:
@@ -231,16 +211,13 @@ class TendenciaCentral_Continuo:
         
         for n in datos:
             suma +=n
-        print(suma)
-        
-        
+             
         for dato in datos[:20]:
             suma_inferior += dato
-        print(suma_inferior)
         
         for m in datos[179:200]:
             suma_superior +=m
-        print(suma_superior)
+
         suma -= (suma_inferior+suma_superior) 
         return round(suma/160,2)
 
@@ -413,6 +390,7 @@ class WindowGraphics(QWidget):
         self.label_Varianza_Resultado.setText(str(tendencia.varianza))
         self.label_DesviacionEstandar_Resultado.setText(str(tendencia.desviacion))
         self.label_Sesgo_Resultado.setText(str(tendencia.sesgo))
+        self.label_Media_Truncada_Resultado.setText(str(tendencia.media_truncada))
 
         tendencia_Discreto = tendenciaCentral_Discreto()
         self.label_MediaAritmetica_Resultado_Discreto.setText(str(tendencia_Discreto.media_arimetica))
